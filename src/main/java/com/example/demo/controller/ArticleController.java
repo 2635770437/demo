@@ -5,16 +5,14 @@ import com.example.demo.po.Article;
 import com.example.demo.service.ArticleService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Tag(name = "文章")
 @RestController
-@RequestMapping("/article")
+@CrossOrigin
+@RequestMapping("/demo/article")
 public class ArticleController {
 
     @Resource
@@ -22,8 +20,8 @@ public class ArticleController {
     /**
      * 新增文章
      */
-    @PostMapping("/新增文章")
-    public CommonResult<String > addArticle(Article article) {
+    @PostMapping("")
+    public CommonResult<String > addArticle(@RequestBody Article article) {
         articleService.save(article);
         return CommonResult.success("添加成功");
     }
@@ -31,11 +29,18 @@ public class ArticleController {
     /**
      * 获取文章信息
      */
-    @GetMapping("/获取文章信息")
+    @GetMapping("")
     public CommonResult<List<Article>> getArticle() {
         return CommonResult.success(articleService.list());
     }
 
+    /**
+     * 获得文章详情
+     */
+    @GetMapping("/detail/{id}")
+    public CommonResult<Article> getArticle(@PathVariable("id") Integer id) {
+        return CommonResult.success(articleService.getById(id));
+    }
 
 
 
